@@ -5,7 +5,14 @@ an implementation of the `cron` library.
 
 ## Getting started
 
-### Running functions
+Add this to your project:
+
+```
+[dependencies]
+cron_job = "0.1.0"
+```
+
+## Examples
 
 You can schedule your own functions as jobs.
 
@@ -56,7 +63,7 @@ fn run_every_five_seconds() {
 }
 ```
 
-## Running jobs implementing Job trait
+### Running jobs implementing Job trait
 
 Since the function used as job cannot have any parameters, the
 `Job` trait is available to be implemented to structs. This way
@@ -90,7 +97,7 @@ impl Job for HelloJob {
 }
 ```
 
-Functions and job can be mixed together.
+Functions and job can also be mixed together.
 
 ``` Function and job
 extern crate cron_job;
