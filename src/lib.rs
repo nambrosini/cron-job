@@ -126,16 +126,16 @@
 //! }
 //! ```
 
-extern crate cron;
 extern crate chrono;
+extern crate cron;
 
-mod job;
 mod cronjob;
+mod job;
 
-pub use job::Job;
 pub use crate::cronjob::CronJob;
+pub use job::Job;
 
-impl <T: Sync + Send + 'static + FnMut()> Job for T {
+impl<T: Sync + Send + 'static + FnMut()> Job for T {
     fn run(&mut self) {
         self()
     }

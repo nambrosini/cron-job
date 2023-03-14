@@ -28,7 +28,8 @@ impl CronJob {
 
     /// Returns the schedules for all the cronjobs, with this you are able to get the next occurrences.
     pub fn get_schedules(&self) -> Vec<Schedule> {
-        self.expressions.iter()
+        self.expressions
+            .iter()
             .map(|ex| Schedule::from_str(ex).unwrap())
             .collect()
     }
@@ -42,10 +43,13 @@ impl CronJob {
     /// Starts the cronjobs without threading.
     pub fn start(&mut self) {
         let schedules = self.get_schedules();
-        let offset = self.offset.unwrap_or_else(|| FixedOffset::east_opt(0).unwrap());
+        let offset = self
+            .offset
+            .unwrap_or_else(|| FixedOffset::east_opt(0).unwrap());
 
         loop {
-            let upcomings: Vec<Option<DateTime<FixedOffset>>> = schedules.iter()
+            let upcomings: Vec<Option<DateTime<FixedOffset>>> = schedules
+                .iter()
                 .map(|schedule| schedule.upcoming(offset).take(1).next())
                 .collect();
             thread::sleep(Duration::from_millis(self.interval));
