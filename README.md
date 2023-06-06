@@ -37,7 +37,7 @@ fn run_on_cron() {
 
 Multiple functions with different cron expression can also be added.
 
-``` rust
+``` Multiple functions
 extern crate cron_job;
 use cron_job::CronJob;
 
@@ -70,7 +70,7 @@ Since the function used as job cannot have any parameters, the
 if any parameter needs to be passed to the function, can be
 passed as the struct property.
 
-``` rust
+``` Job
 extern crate cron_job;
 use cron_job::CronJob;
 
@@ -99,7 +99,7 @@ impl Job for HelloJob {
 
 Functions and job can also be mixed together.
 
-``` rust
+``` Function and job
 extern crate cron_job;
 use cron_job::CronJob;
 
