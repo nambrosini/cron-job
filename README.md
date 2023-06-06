@@ -1,4 +1,4 @@
-# cron-job [![crates.io](https://img.shields.io/crates/v/cron-job.svg)](https://crates.io/crates/cron) [![docs](https://docs.rs/cron/badge.svg)](https://docs.rs/cron)
+# cron-job [![crates.io](https://img.shields.io/crates/v/cron-job.svg)](https://crates.io/crates/cron-job) [![docs](https://docs.rs/cron-job/badge.svg)](https://docs.rs/cron-job)
 
 The `cron-job` library lets you create cronjobs. This is basically
 an implementation of the `cron` library.
