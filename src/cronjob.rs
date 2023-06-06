@@ -25,7 +25,7 @@ impl CronJob {
             interval,
         }
     }
-    
+
     /// Sets the interval for the cronjobs.
     pub fn set_interval(&mut self, interval: u64) {
         self.interval = interval;
