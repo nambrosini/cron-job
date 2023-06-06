@@ -17,13 +17,23 @@ pub struct CronJob {
 
 impl CronJob {
     /// Constructs new `CronJob` object.
-    pub fn new() -> Self {
+    pub fn new(offset: Option<FixedOffset>, interval: u64) -> Self {
         CronJob {
             jobs: Vec::new(),
             expressions: Vec::new(),
-            offset: None,
-            interval: 500,
+            offset,
+            interval,
         }
+    }
+    
+    /// Sets the interval for the cronjobs.
+    pub fn set_interval(&mut self, interval: u64) {
+        self.interval = interval;
+    }
+
+    /// Sets the offset for the cronjobs.
+    pub fn set_offset(&mut self, offset: FixedOffset) {
+        self.offset = Some(offset);
     }
 
     /// Returns the schedules for all the cronjobs, with this you are able to get the next occurrences.
@@ -69,6 +79,11 @@ impl CronJob {
 /// Default implementation for CronJob.
 impl Default for CronJob {
     fn default() -> Self {
-        Self::new()
+        Self {
+            jobs: Vec::new(),
+            expressions: Vec::new(),
+            offset: None,
+            interval: 500,
+        }
     }
 }
