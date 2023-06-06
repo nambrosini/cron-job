@@ -1,4 +1,4 @@
-# cron-job [![crates.io](https://img.shields.io/crates/v/cron-job.svg)](https://crates.io/crates/cron-job) [![docs](https://docs.rs/cron-job/badge.svg)](https://docs.rs/cron-job)
+# cron-job [![crates.io](https://github.com/nambrosini/cron-job/actions/workflows/.github/workflows/continuous-rust.yaml/badge.svg)](https://github.com/nambrosini/cron-job/actions) [![crates.io](https://img.shields.io/crates/v/cron-job.svg)](https://crates.io/crates/cron-job) [![docs](https://docs.rs/cron-job/badge.svg)](https://docs.rs/cron-job)
 
 The `cron-job` library lets you create cronjobs. This is basically
 an implementation of the `cron` library.
@@ -9,7 +9,7 @@ Add this to your project:
 
 ```
 [dependencies]
-cron_job = "0.1.0"
+cron_job = "0.1.2"
 ```
 
 ## Examples
@@ -37,7 +37,7 @@ fn run_on_cron() {
 
 Multiple functions with different cron expression can also be added.
 
-``` Multiple functions
+``` rust
 extern crate cron_job;
 use cron_job::CronJob;
 
@@ -70,7 +70,7 @@ Since the function used as job cannot have any parameters, the
 if any parameter needs to be passed to the function, can be
 passed as the struct property.
 
-``` Job
+``` rust
 extern crate cron_job;
 use cron_job::CronJob;
 
@@ -99,7 +99,7 @@ impl Job for HelloJob {
 
 Functions and job can also be mixed together.
 
-``` Function and job
+``` rust
 extern crate cron_job;
 use cron_job::CronJob;
 
