@@ -15,7 +15,7 @@
 //!
 //! fn main() {
 //!     // Create CronJob
-//!     let mut cron = CronJob::new();
+//!     let mut cron = CronJob::default();
 //!     // Add the function
 //!     cron.new_job("* * * * * *", run_on_cron);
 //!     // Start job
@@ -36,11 +36,11 @@
 //!
 //! fn main() {
 //!     // Create CronJob
-//!     let mut cron = CronJob::new();
+//!     let mut cron = CronJob::default();
 //!     // Add the function to be run every second
 //!     cron.new_job("* * * * * *", run_every_second);
 //!     // Add the function to be run every 5 seconds
-//!     cron.new_job("*/5 * * * * *", run_every_five_minutes);
+//!     cron.new_job("*/5 * * * * *", run_every_five_seconds);
 //!     // Start jobs
 //!     cron.start();
 //! }
@@ -50,9 +50,9 @@
 //!     println!("1 second");
 //! }
 //!
-//! // The function to be executed every 5 minutes.
+//! // The function to be executed every 5 seconds.
 //! fn run_every_five_seconds() {
-//!     println!("5 minutes");
+//!     println!("5 seconds");
 //! }
 //! ```
 //!
@@ -71,7 +71,7 @@
 //!     // Create HelloJob
 //!     let helloJob = HelloJob{ name: "John" };
 //!     // Create CronJob
-//!     let mut cron = CronJob::new();
+//!     let mut cron = CronJob::default();
 //!     // Say hello every second
 //!     cron.new_job("* * * * * *", helloJob);
 //!     // Start jobs
@@ -100,7 +100,7 @@
 //!     // Create HelloJob
 //!     let helloJob = HelloJob{ name: "John" };
 //!     // Create CronJob
-//!     let mut cron = CronJob::new();
+//!     let mut cron = CronJob::default();
 //!     // Run function every second
 //!     cron.new_job("* * * * * *", run_every_second);
 //!     // Say hello every second
