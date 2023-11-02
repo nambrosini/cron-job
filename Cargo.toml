@@ -10,5 +10,5 @@ keywords = ["cron", "cronjob", "cronjobs"]
 categories = ["cronjob", "cronjobs"]
 
 [dependencies]
-chrono = "0.4.24"
+chrono = "0.4.31"
 cron = "0.12.0"
