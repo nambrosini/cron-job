@@ -9,7 +9,7 @@ Add this to your project:
 
 ```
 [dependencies]
-cron_job = "0.1.2"
+cron_job = "0.1.3"
 ```
 
 ## Examples
