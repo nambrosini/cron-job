@@ -17,6 +17,7 @@ pub struct CronJob {
 
 impl CronJob {
     /// Constructs new `CronJob` object.
+    #[must_use]
     pub fn new(offset: Option<FixedOffset>, interval: u64) -> Self {
         CronJob {
             jobs: Vec::new(),
@@ -37,10 +38,12 @@ impl CronJob {
     }
 
     /// Returns the schedules for all the cronjobs, with this you are able to get the next occurrences.
-    pub fn get_schedules(&self) -> Vec<Schedule> {
+    /// # Errors
+    /// If the schedules are not valid.
+    pub fn get_schedules(&self) -> Result<Vec<Schedule>, cron::error::Error> {
         self.expressions
             .iter()
-            .map(|ex| Schedule::from_str(ex).unwrap())
+            .map(|ex| Schedule::from_str(ex))
             .collect()
     }
 
@@ -51,8 +54,10 @@ impl CronJob {
     }
 
     /// Starts the cronjobs without threading.
-    pub fn start(&mut self) {
-        let schedules = self.get_schedules();
+    /// # Errors
+    /// If the schedules are not valid.
+    pub fn start(&mut self) -> Result<(), cron::error::Error> {
+        let schedules = self.get_schedules()?;
         let offset = self
             .offset
             .unwrap_or_else(|| FixedOffset::east_opt(0).unwrap());
@@ -68,7 +73,7 @@ impl CronJob {
             for (i, upcoming) in upcomings.iter().enumerate() {
                 if let Some(datetime) = upcoming {
                     if datetime.timestamp() <= local.timestamp() {
-                        self.jobs[i].run()
+                        self.jobs[i].run();
                     }
                 }
             }
@@ -76,7 +81,7 @@ impl CronJob {
     }
 }
 
-/// Default implementation for CronJob.
+/// Default implementation for `CronJob`.
 impl Default for CronJob {
     fn default() -> Self {
         Self {

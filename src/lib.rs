@@ -137,6 +137,6 @@ pub use job::Job;
 
 impl<T: Sync + Send + 'static + FnMut()> Job for T {
     fn run(&mut self) {
-        self()
+        self();
     }
 }
