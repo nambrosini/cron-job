@@ -7,7 +7,6 @@ description = "A cronjob implementation using the cron scheduler"
 readme = "README.md"
 repository = "https://github.com/nambrosini/cron-job/"
 keywords = ["cron", "cronjob", "cronjobs"]
-categories = ["cronjob", "cronjobs"]
 
 [dependencies]
 chrono = "0.4.31"
