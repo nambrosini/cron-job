@@ -9,5 +9,5 @@ repository = "https://github.com/nambrosini/cron-job/"
 keywords = ["cron", "cronjob", "cronjobs"]
 
 [dependencies]
-chrono = "0.4.31"
+chrono = "0.4.41"
 cron = "0.15.0"
