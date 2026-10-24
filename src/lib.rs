@@ -125,7 +125,7 @@
 mod cronjob;
 mod job;
 
-pub use crate::cronjob::CronJob;
+pub use crate::cronjob::{CronJob, StopHandle};
 pub use job::Job;
 
 impl<T: Send + 'static + FnMut()> Job for T {
