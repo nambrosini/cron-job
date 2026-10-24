@@ -9,15 +9,14 @@
 //!
 //! You can schedule your own functions as jobs.
 //!
-//! ``` Functions
-//! extern crate cron_job;
+//! ```rust,no_run
 //! use cron_job::CronJob;
 //!
 //! fn main() {
 //!     // Create CronJob
 //!     let mut cron = CronJob::default();
 //!     // Add the function
-//!     cron.new_job("* * * * * *", run_on_cron);
+//!     cron.new_job("* * * * * *", run_on_cron).unwrap();
 //!     // Start job
 //!     cron.start();
 //! }
@@ -30,17 +29,16 @@
 //!
 //! Multiple functions with different cron expression can also be added.
 //!
-//! ``` Multiple functions
-//! extern crate cron_job;
+//! ```rust,no_run
 //! use cron_job::CronJob;
 //!
 //! fn main() {
 //!     // Create CronJob
 //!     let mut cron = CronJob::default();
 //!     // Add the function to be run every second
-//!     cron.new_job("* * * * * *", run_every_second);
+//!     cron.new_job("* * * * * *", run_every_second).unwrap();
 //!     // Add the function to be run every 5 seconds
-//!     cron.new_job("*/5 * * * * *", run_every_five_seconds);
+//!     cron.new_job("*/5 * * * * *", run_every_five_seconds).unwrap();
 //!     // Start jobs
 //!     cron.start();
 //! }
@@ -63,17 +61,16 @@
 //! if any parameter needs to be passed to the function, can be
 //! passed as the struct property.
 //!
-//! ``` Job
-//! extern crate cron_job;
-//! use cron_job::CronJob;
+//! ```rust,no_run
+//! use cron_job::{CronJob, Job};
 //!
 //! fn main() {
 //!     // Create HelloJob
-//!     let helloJob = HelloJob{ name: "John" };
+//!     let hello_job = HelloJob{ name: "John".to_string() };
 //!     // Create CronJob
 //!     let mut cron = CronJob::default();
 //!     // Say hello every second
-//!     cron.new_job("* * * * * *", helloJob);
+//!     cron.new_job("* * * * * *", hello_job).unwrap();
 //!     // Start jobs
 //!     cron.start();
 //! }
@@ -84,7 +81,7 @@
 //! }
 //!
 //! impl Job for HelloJob {
-//!     fn run(&self) {
+//!     fn run(&mut self) {
 //!         println!("Hello, {}!", self.name);
 //!     }
 //! }
@@ -92,19 +89,18 @@
 //!
 //! Functions and job can be mixed together.
 //!
-//! ``` Function and job
-//! extern crate cron_job;
-//! use cron_job::CronJob;
+//! ```rust,no_run
+//! use cron_job::{CronJob, Job};
 //!
 //! fn main() {
 //!     // Create HelloJob
-//!     let helloJob = HelloJob{ name: "John" };
+//!     let hello_job = HelloJob{ name: "John".to_string() };
 //!     // Create CronJob
 //!     let mut cron = CronJob::default();
 //!     // Run function every second
-//!     cron.new_job("* * * * * *", run_every_second);
+//!     cron.new_job("* * * * * *", run_every_second).unwrap();
 //!     // Say hello every second
-//!     cron.new_job("* * * * * *", helloJob);
+//!     cron.new_job("* * * * * *", hello_job).unwrap();
 //!     // Start jobs
 //!     cron.start();
 //! }
@@ -120,14 +116,11 @@
 //!
 //! // Very important, implement the Job trait and its functions.
 //! impl Job for HelloJob {
-//!     fn run(&self) {
+//!     fn run(&mut self) {
 //!         println!("Hello, {}!", self.name);
 //!     }
 //! }
 //! ```
-
-extern crate chrono;
-extern crate cron;
 
 mod cronjob;
 mod job;
@@ -135,7 +128,7 @@ mod job;
 pub use crate::cronjob::CronJob;
 pub use job::Job;
 
-impl<T: Sync + Send + 'static + FnMut()> Job for T {
+impl<T: Send + 'static + FnMut()> Job for T {
     fn run(&mut self) {
         self();
     }
