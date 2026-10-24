@@ -65,6 +65,49 @@ fn slow_job_skips_overrun_ticks() {
 }
 
 #[test]
+fn panicking_job_does_not_stop_other_jobs() {
+    let (tx, rx): (Sender<i32>, Receiver<i32>) = mpsc::channel();
+
+    thread::spawn(move || {
+        let mut cron = CronJob::default();
+        cron.new_job("* * * * * *", || panic!("job failed"))
+            .unwrap();
+        cron.new_job("* * * * * *", NewJob { sender: tx }).unwrap();
+        cron.start();
+    });
+
+    thread::sleep(Duration::from_millis(3100));
+    let count = rx.try_iter().count();
+    assert!((3..=4).contains(&count), "ran {count} times");
+}
+
+#[test]
+fn stop_handle_ends_start() {
+    let mut cron = CronJob::default();
+    cron.new_job("* * * * * *", || {}).unwrap();
+    let handle = cron.stop_handle();
+    let (done_tx, done_rx) = mpsc::channel();
+
+    thread::spawn(move || {
+        cron.start();
+        done_tx.send(()).unwrap();
+    });
+
+    thread::sleep(Duration::from_millis(1500));
+    handle.stop();
+    // `start` was sleeping until the next tick, so it must wake well within a second.
+    assert!(done_rx.recv_timeout(Duration::from_millis(200)).is_ok());
+}
+
+#[test]
+fn stop_before_start_returns_immediately() {
+    let mut cron = CronJob::default();
+    cron.new_job("* * * * * *", || {}).unwrap();
+    cron.stop_handle().stop();
+    cron.start();
+}
+
+#[test]
 fn start_returns_when_no_jobs() {
     CronJob::default().start();
 }
