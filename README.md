@@ -5,11 +5,10 @@ an implementation of the `cron` library.
 
 ## Getting started
 
-Add this to your project:
+Add it to your project:
 
-```toml
-[dependencies]
-cron-job = "0.3.0"
+```sh
+cargo add cron-job
 ```
 
 ## Examples
