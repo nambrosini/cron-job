@@ -1,15 +1,14 @@
-# cron-job [![crates.io](https://github.com/nambrosini/cron-job/actions/workflows/.github/workflows/continuous-rust.yaml/badge.svg)](https://github.com/nambrosini/cron-job/actions) [![crates.io](https://img.shields.io/crates/v/cron-job.svg)](https://crates.io/crates/cron-job) [![docs](https://docs.rs/cron-job/badge.svg)](https://docs.rs/cron-job)
+# cron-job [![CI](https://github.com/nambrosini/cron-job/actions/workflows/rust.yml/badge.svg)](https://github.com/nambrosini/cron-job/actions/workflows/rust.yml) [![crates.io](https://img.shields.io/crates/v/cron-job.svg)](https://crates.io/crates/cron-job) [![docs](https://docs.rs/cron-job/badge.svg)](https://docs.rs/cron-job)
 
 The `cron-job` library lets you create cronjobs. This is basically
 an implementation of the `cron` library.
 
 ## Getting started
 
-Add this to your project:
+Add it to your project:
 
-```
-[dependencies]
-cron_job = "0.2.0"
+```sh
+cargo add cron-job
 ```
 
 ## Examples
@@ -17,14 +16,13 @@ cron_job = "0.2.0"
 You can schedule your own functions as jobs.
 
 ``` rust
-extern crate cron_job;
 use cron_job::CronJob;
 
 fn main() {
     // Create CronJob
     let mut cron = CronJob::default();
     // Add the function
-    cron.new_job("* * * * * *", run_on_cron);
+    cron.new_job("* * * * * *", run_on_cron).unwrap();
     // Start job
     cron.start();
 }
@@ -38,16 +36,15 @@ fn run_on_cron() {
 Multiple functions with different cron expression can also be added.
 
 ``` rust
-extern crate cron_job;
 use cron_job::CronJob;
 
 fn main() {
     // Create CronJob
     let mut cron = CronJob::default();
     // Add the function to be run every second
-    cron.new_job("* * * * * *", run_every_second);
+    cron.new_job("* * * * * *", run_every_second).unwrap();
     // Add the function to be run every 5 seconds
-    cron.new_job("*/5 * * * * *", run_every_five_seconds);
+    cron.new_job("*/5 * * * * *", run_every_five_seconds).unwrap();
     // Start jobs
     cron.start();
 }
@@ -71,16 +68,15 @@ if any parameter needs to be passed to the function, can be
 passed as the struct property.
 
 ``` rust
-extern crate cron_job;
-use cron_job::CronJob;
+use cron_job::{CronJob, Job};
 
 fn main() {
     // Create HelloJob
-    let helloJob = HelloJob{ name: "John" };
+    let hello_job = HelloJob{ name: "John".to_string() };
     // Create CronJob
     let mut cron = CronJob::default();
     // Say hello every second
-    cron.new_job("* * * * * *", helloJob);
+    cron.new_job("* * * * * *", hello_job).unwrap();
     // Start jobs
     cron.start();
 }
@@ -91,7 +87,7 @@ struct HelloJob {
 }
 
 impl Job for HelloJob {
-    fn run(&self) {
+    fn run(&mut self) {
         println!("Hello, {}!", self.name);
     }
 }
@@ -100,18 +96,17 @@ impl Job for HelloJob {
 Functions and job can also be mixed together.
 
 ``` rust
-extern crate cron_job;
-use cron_job::CronJob;
+use cron_job::{CronJob, Job};
 
 fn main() {
     // Create HelloJob
-    let helloJob = HelloJob{ name: "John" };
+    let hello_job = HelloJob{ name: "John".to_string() };
     // Create CronJob
     let mut cron = CronJob::default();
     // Run function every second
-    cron.new_job("* * * * * *", run_every_second);
+    cron.new_job("* * * * * *", run_every_second).unwrap();
     // Say hello every second
-    cron.new_job("* * * * * *", helloJob);
+    cron.new_job("* * * * * *", hello_job).unwrap();
     // Start jobs
     cron.start();
 }
@@ -127,7 +122,7 @@ struct HelloJob {
 
 // Very important, implement the Job trait and its functions.
 impl Job for HelloJob {
-    fn run(&self) {
+    fn run(&mut self) {
         println!("Hello, {}!", self.name);
     }
 }
